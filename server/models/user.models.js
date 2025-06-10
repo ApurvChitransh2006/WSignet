@@ -1,23 +1,26 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken")
 
 const UserSchema = new Schema(
   {
-    username: String,
+    firmname: String,
+    firmcode: String,
     password: String,
   },
   { timestamps: true }
 );
 
-UserSchema.statics.hashPassword = function (pass) {
+UserSchema.pre("save", function (next) {
+  if (!this.isModified("password")) return next();
   const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(pass, salt);
-  return hash;
-};
+  this.password = bcrypt.hashSync(this.password, salt);
+  next();
+});
 
-UserSchema.statics.comparePass = function (pass, hash) {
-  const res = bcrypt.compareSync(pass, hash);
+UserSchema.methods.comparePass = function (pass) {
+  const res = bcrypt.compareSync(pass, this.password);
   return res;
 };
 

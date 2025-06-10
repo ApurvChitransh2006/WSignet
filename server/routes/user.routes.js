@@ -3,13 +3,12 @@ const user = require("../models/user.models");
 const router = express.Router();
 
 // getting the list of all the user present in the database
-router.get("/", async (req, res) => {
+router.get("/all", async (req, res) => {
   try {
     const data = await user.find();
     res.status(200).send(data);
   } catch (error) {
-    console.log("Error:", error.message);
-    res.status(500).send("Sorry! There is a server error");
+    console.log("Error:", error);
   }
 });
 
@@ -20,8 +19,7 @@ router.get("/:id", async (req, res) => {
     const data = await user.findById(id);
     res.status(200).send(data);
   } catch (error) {
-    console.log("Error:", error.message);
-    res.status(500).send("Sorry! There is a server error");
+    console.log("Error:", error);
   }
 });
 
@@ -29,14 +27,12 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const data = req.body;
-    if (!(data.username && data.password))
+    if (!(data.firmname && data.password && data.firmcode))
       throw new Error("There is no value in the request body");
-    const pass = await user.hashPassword(data.password)
-    const dbres = await user.create({"username": data.username, password: pass})
+    const dbres = await user.create(data)
     res.status(200).send(dbres);
   } catch (error) {
-    console.log("Error: ", error.message);
-    res.status(500).send("Sorry! There is a server error");
+    console.log("Error: ", error);
   }
 });
 
@@ -60,27 +56,9 @@ router.delete("/:id", async (req, res) => {
     const dbres = await user.findByIdAndDelete(id);
     res.status(200).send("The User is Deleted Successfully");
   } catch (error) {
-    console.log("Error:", error.message);
-    res.status(500).send("Sorry! There is a server error");
+    console.log("Error:", error);
   }
 });
 
-// Login Route for User
-router.post("/login", async (req, res) => {
-  try {
-    const data = req.body;
-    if (!(data.username && data.password))
-      throw new Error("There is no value in the request body");
-    const { id, username, password } = data;
-    const userdata = await user.findById(id);
-    if (!userdata) res.status(400).send("There is no User present of this ID");
-    if (!(userdata.username == username && user.comparePass(password, userdata.password)))
-      res.status(400).send("Please Enter correct Username & Passwords");
-    res.status(200).send("Login Successfully", id);
-  } catch (error) {
-    console.log("Error: ", error.message);
-    res.status(500).send("Sorry! There is a server error");
-  }
-});
 
 module.exports = router;
