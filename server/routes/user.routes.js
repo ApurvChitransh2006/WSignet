@@ -1,8 +1,3 @@
-// const UserSchema = new Schema({
-//   username: String,
-//   password: String,
-// },{timestamps: true})
-
 const express = require("express");
 const user = require("../models/user.models");
 const router = express.Router();
@@ -36,7 +31,8 @@ router.post("/", async (req, res) => {
     const data = req.body;
     if (!(data.username && data.password))
       throw new Error("There is no value in the request body");
-    const dbres = await user.create(data);
+    const pass = await user.hashPassword(data.password)
+    const dbres = await user.create({"username": data.username, password: pass})
     res.status(200).send(dbres);
   } catch (error) {
     console.log("Error: ", error.message);
@@ -49,7 +45,7 @@ router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    const dbres = await user.findByIdAndUpdate(id, data, {new:true});
+    const dbres = await user.findByIdAndUpdate(id, data, { new: true });
     res.status(200).send(dbres);
   } catch (error) {
     console.log("Error:", error.message);
@@ -62,9 +58,27 @@ router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const dbres = await user.findByIdAndDelete(id);
-    res.status(200).send('The User is Deleted Successfully');
+    res.status(200).send("The User is Deleted Successfully");
   } catch (error) {
     console.log("Error:", error.message);
+    res.status(500).send("Sorry! There is a server error");
+  }
+});
+
+// Login Route for User
+router.post("/login", async (req, res) => {
+  try {
+    const data = req.body;
+    if (!(data.username && data.password))
+      throw new Error("There is no value in the request body");
+    const { id, username, password } = data;
+    const userdata = await user.findById(id);
+    if (!userdata) res.status(400).send("There is no User present of this ID");
+    if (!(userdata.username == username && user.comparePass(password, userdata.password)))
+      res.status(400).send("Please Enter correct Username & Passwords");
+    res.status(200).send("Login Successfully", id);
+  } catch (error) {
+    console.log("Error: ", error.message);
     res.status(500).send("Sorry! There is a server error");
   }
 });
