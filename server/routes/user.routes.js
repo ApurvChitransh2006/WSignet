@@ -1,11 +1,11 @@
 const express = require("express");
-const user = require("../models/user.models");
+const User = require("../models/user.models");
 const router = express.Router();
 
 // getting the list of all the user present in the database
 router.get("/all", async (req, res) => {
   try {
-    const data = await user.find();
+    const data = await User.find();
     res.status(200).send(data);
   } catch (error) {
     console.log("Error:", error);
@@ -16,7 +16,7 @@ router.get("/all", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await user.findById(id);
+    const data = await User.findById(id);
     res.status(200).send(data);
   } catch (error) {
     console.log("Error:", error);
@@ -28,8 +28,8 @@ router.post("/", async (req, res) => {
   try {
     const data = req.body;
     if (!(data.firmname && data.password && data.firmcode))
-      throw new Error("There is no value in the request body");
-    const dbres = await user.create(data)
+      res.status(400).send("There is no value in the request body");
+    const dbres = await User.create(data)
     res.status(200).send(dbres);
   } catch (error) {
     console.log("Error: ", error);
@@ -41,11 +41,10 @@ router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    const dbres = await user.findByIdAndUpdate(id, data, { new: true });
+    const dbres = await User.findByIdAndUpdate(id, data, { new: true });
     res.status(200).send(dbres);
   } catch (error) {
     console.log("Error:", error.message);
-    res.status(500).send("Sorry! There is a server error");
   }
 });
 
@@ -53,7 +52,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const dbres = await user.findByIdAndDelete(id);
+    const dbres = await User.findByIdAndDelete(id);
     res.status(200).send("The User is Deleted Successfully");
   } catch (error) {
     console.log("Error:", error);

@@ -5,9 +5,20 @@ const jwt = require("jsonwebtoken")
 
 const UserSchema = new Schema(
   {
-    firmname: String,
-    firmcode: String,
-    password: String,
+    firmname: {
+      type: String,
+      required: true
+    },
+    firmcode: {
+      type: String,
+      unique: true,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    refresh_token: String
   },
   { timestamps: true }
 );
