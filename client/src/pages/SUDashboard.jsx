@@ -1,10 +1,5 @@
 import React from "react";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -43,7 +38,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -75,7 +79,10 @@ const SUDashboard = () => {
   ];
   return (
     <>
-      <Tabs defaultValue="accountCreate" className="md:min-w-md min-w-sm max-h-3/4 overflow-y-scroll">
+      <Tabs
+        defaultValue="accountCreate"
+        className="md:min-w-md min-w-sm max-h-3/4 overflow-y-scroll"
+      >
         <TabsList>
           <TabsTrigger value="accountCreate">Create Account</TabsTrigger>
           <TabsTrigger value="accountlist">Account List</TabsTrigger>
@@ -125,7 +132,7 @@ const SUDashboard = () => {
             </CardFooter>
           </Card>
         </TabsContent>
-        <TabsContent value="accountlist" >
+        <TabsContent value="accountlist">
           <Table className="">
             <TableCaption>List of Firm Data</TableCaption>
             <TableHeader>
