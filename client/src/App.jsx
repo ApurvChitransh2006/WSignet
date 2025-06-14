@@ -1,13 +1,16 @@
-import { Button } from "@/components/ui/button"
-import { ModeToggle } from "./components/ui/mode-toggle"
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import SuperUserDashboard from "./pages/SuperUserDashboard";
 
 function App() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center">
-      <Button>Click me</Button>
-      <ModeToggle/>
-    </div>
-  )
+    <>
+      <Routes>
+        <Route index element={<HomePage />} />
+        <Route path="/sudash" element={<SuperUserDashboard />} />
+      </Routes>
+    </>
+  );
 }
 
-export default App
+export default App;
