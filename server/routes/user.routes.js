@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const data = req.body;
-    if (!(data.firmname && data.password && data.firmcode))
+    if (!(data.firmname && data.password && data.firmcode && data.isSuperUser))
       res.status(400).send("There is no value in the request body");
     const dbres = await User.create(data)
     res.status(200).send(dbres);

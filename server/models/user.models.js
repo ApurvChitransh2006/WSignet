@@ -18,6 +18,10 @@ const UserSchema = new Schema(
       type: String,
       required: true
     },
+    isSuperUser: {
+      type: Boolean,
+      required: true
+    },
     refresh_token: String
   },
   { timestamps: true }

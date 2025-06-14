@@ -19,7 +19,7 @@ router.post('/login',async (req, res)=>{
   if (!checkPass) 
     return res.status(400).send("Credentials are Wrong")
 
-  const accessToken = generateAccessToken({ id: user.id, firmname: user.firmname, firmcode: user.firmcode })
+  const accessToken = generateAccessToken({ id: user.id, firmname: user.firmname, firmcode: user.firmcode, isSuperUser: user.isSuperUser })
   const refreshToken = generateRefreshToken({ id: user.id })
   
   user.refresh_token = refreshToken
@@ -46,7 +46,7 @@ router.post("/refresh-token", async (req, res) => {
   if (!user || user.refresh_token !== token)
     return res.status(403).send("Invalid refresh token");
 
-  const accessToken = generateAccessToken({ id: user.id, firmname: user.firmname, firmcode: user.firmcode })
+  const accessToken = generateAccessToken({ id: user.id, firmname: user.firmname, firmcode: user.firmcode, isSuperUser: user.isSuperUser })
   const refreshToken = generateRefreshToken({ id: user.id })
   user.refresh_token = refreshToken;
   await user.save();
