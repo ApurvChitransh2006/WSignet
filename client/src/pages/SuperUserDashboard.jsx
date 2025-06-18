@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import CreateAccount from '../components/SUDash/CreateAccount'
 import AccountList from '../components/SUDash/AccountList'
+import { MdLogout } from "react-icons/md";
+import { Link } from 'react-router-dom';
 
 const SuperUserDashboard = () => {
   const [catoggle, setCatoggle] = useState(true)
@@ -19,10 +21,11 @@ const SuperUserDashboard = () => {
         </div>
       </div>
       {/* Content Tab */}
-      <div className='h-8/12 w-10/12 md:w-8/12 bg-[rgb(20,20,20)] rounded-2xl'>
+      <div className='h-8/12 w-11/12 md:w-8/12 bg-[rgb(20,20,20)] rounded-2xl'>
         <div className={catoggle?contentShowCSS:contentHideCSS}><CreateAccount/></div>
         <div className={catoggle?contentHideCSS:contentShowCSS}><AccountList/></div>
       </div>
+      <Link to={'/'}><div className='fixed top-2 right-2 font-bold text-3xl border-2 rounded-full p-2'><MdLogout/></div></Link>
     </div>
   )
 }

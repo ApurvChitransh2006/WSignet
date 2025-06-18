@@ -1,4 +1,5 @@
 import React from 'react'
+import { RxCross2 } from "react-icons/rx";
 
 const DeleteDialog = ({deleteData, setDeleteData}) => {
   return (
@@ -10,7 +11,7 @@ const DeleteDialog = ({deleteData, setDeleteData}) => {
           <button className='px-3 bg-green-500 rounded-lg text-xl md:text-2xl mt-4 active:bg-green-300'>Yes</button>
           <button className='px-3 bg-red-500 rounded-lg text-xl md:text-2xl mt-4 active:bg-red-300' onClick={()=>{setDeleteData(null)}}>No</button>
         </div>
-        <div className='absolute top-2 right-2 text-sm ' onClick={()=>{setDeleteData(null)}}>❌</div>
+        <div className='absolute top-2 right-2 text-sm ' onClick={()=>{setDeleteData(null)}}><RxCross2 className='text-2xl'/></div>
       </div>
     </div>
   )
