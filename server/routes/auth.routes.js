@@ -38,10 +38,12 @@ router.post('/login',async (req, res)=>{
 // For Refreshing Tokens
 router.post("/refresh-token", async (req, res) => {
   const token = req.cookies.refreshToken;
+  console.log(token)
   if (!token) return res.status(401).send("No refresh token");
 
   const JWT_SECRET_REFRESH_KEY = process.env.JWT_SECRET_REFRESH_KEY
   const decoded = jwt.verify(token, JWT_SECRET_REFRESH_KEY);
+  console.log(decoded)
   const user = await User.findById(decoded.id);
   if (!user || user.refresh_token !== token)
     return res.status(403).send("Invalid refresh token");
@@ -63,7 +65,8 @@ router.post("/refresh-token", async (req, res) => {
 
 // For getting data from the tokens
 router.get('/profile', authenticate, async (req, res)=>{
-  const user = await User.findById(req.user.id).select("-password");
+  if (!req.user) return res.status(501).send("No User Present or Invalid Token")
+  const user = await User.findById(req.user.id).select('-password -refresh_token');
   res.status(200).json(user);
 })
 
