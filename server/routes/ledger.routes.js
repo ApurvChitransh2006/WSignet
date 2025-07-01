@@ -1,0 +1,32 @@
+const express = require('express')
+const router = express.Router()
+const ledger = require('../models/ledger.models')
+const {csvParseLedger} = require('../controllers/csv.controllers')
+const {upload} = require('../utils/files.utils')
+
+
+
+router.post('/update/:code', upload.single('file'), async (req, res) => {
+  try {
+    await ledger.deleteMany({ firmCode: req.params.code });
+
+    const extension = req.file.originalname.split('.').pop();
+    const fileName = req.file.fieldname + '.' + extension;
+
+    const arr = await csvParseLedger(fileName, req.params.code);
+    const chunkSize = 1000;
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      const chunk = arr.slice(i, i + chunkSize);
+      const result = await ledger.insertMany(chunk);
+      console.log(`Inserted chunk: ${i} - ${i + chunk.length}`);
+    }
+
+    res.status(200).json('Uploaded Successfully');
+  } catch (error) {
+    console.error("CSV Parse Error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+module.exports = router

@@ -55,13 +55,13 @@ const ReportGeneration = () => {
                   setEditData(null);
                 }}
               >
-                Download
+                View
               </button>
             </div>
           </form>
         </div>
       </div>
-      <ReportPDF/>
+      {/* <ReportPDF/> */}
       <Navbar />
     </>
   );
