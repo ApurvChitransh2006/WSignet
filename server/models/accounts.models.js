@@ -5,12 +5,11 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  accountName: {
-    type: String
-  },
-  accountNo: {
-    type: String
-  },
+  accountName: String,
+  accountNo: String,
+  balance: String,
+  balMode: String,
+  area: String
 }, {timestamps: true})
 
 const Accounts = mongoose.model('Accounts', AccountSchema)

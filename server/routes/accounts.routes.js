@@ -29,5 +29,16 @@ router.post('/update/:code', upload.single('file'), async (req, res) => {
   }
 });
 
+router.get('/getList/:code', async (req, res)=>{
+  try {
+    const firmCode = req.params.code
+    const result = await accounts.find({firmCode: firmCode})
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({error:error.message})
+  }
+})
+
 
 module.exports = router

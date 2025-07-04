@@ -14,16 +14,14 @@ const ProductContext = ({children}) => {
   const {user} = useAuth()
 
   const generateList = async ()=>{
-    const res = await instance.get(`/item/getlist/${user.firmcode}`)
-    setList(res.data)
+    try {
+      const res = await instance.get(`/item/getlist/${user.firmcode}`)
+      setList(res.data)
+    } catch {}
   }
   useEffect(() => {
     generateList()
   }, [user])
-  
-  useEffect(() => {
-    console.log(list)
-  }, [generateList])
   
   return (
     <Product.Provider value={{list: list}}>

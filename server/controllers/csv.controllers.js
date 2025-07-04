@@ -48,7 +48,10 @@ export const csvParseAccount = async (fileName, firmCode) => {
         let info = {
           firmCode: firmCode,
           accountName: data.Ac_Name,
-          accountNo: data.Acno
+          accountNo: data.Acno,
+          balance: data.Bal1,
+          balMode: data.Bal1_Mode,
+          area: data.Area_Name
         }
         results.push(info)
       })

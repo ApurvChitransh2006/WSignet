@@ -3,13 +3,14 @@ import useAuth from '../../hooks/useAuth'
 
 const HomeFormSection = () => {
 
-  const {login} = useAuth()
+  const {login, cred} = useAuth()
 
   const [form, setForm] = useState({
     firmcode: "",
     password: "",
   })
   
+
   const handleChange = (e) => {
     const name = e.target.name
     const value = e.target.value
@@ -50,6 +51,7 @@ const HomeFormSection = () => {
                   <label htmlFor="password" className="text-gray-400 text-sm">Password:</label>
                   <input type="password" name="password" className="bg-white h-10 rounded-lg text-black text-xl px-2" placeholder="•••••••••" value={form.password} onChange={(e)=>handleChange(e)}/>
                 </div>
+                {cred && (<div className='text-red-500 mt-2 text-xl'>{cred}</div>)}
                 <div className="flex flex-col mt-10">
                   <button className="bg-emerald-600 h-10 rounded-lg text-white text-xl">Submit</button>
                 </div>
