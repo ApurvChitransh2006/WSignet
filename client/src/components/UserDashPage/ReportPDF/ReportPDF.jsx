@@ -121,15 +121,15 @@ const ReportPDF = ({
       ))}
 
       {/* Totals */}
-      <div className="grid grid-cols-12 text-sm py-3 font-semibold border-t-2 mt-2">
-        <div className="col-span-7 text-right pr-4">Total:</div>
-        <div className="col-span-2 text-right border-r">
+      <div className="grid grid-cols-18 text-sm py-3 font-semibold border-t-2 mt-2">
+        <div className="col-span-9 text-right pr-4">Total:</div>
+        <div className="col-span-3 text-right border-r">
           {totalDr.toFixed(2)}
         </div>
-        <div className="col-span-2 text-right border-r">
+        <div className="col-span-3 text-right border-r">
           {totalCr.toFixed(2)}
         </div>
-        <div className="col-span-1 text-right font-bold">
+        <div className="col-span-3 text-right font-bold">
           {Math.abs(finalBalance).toFixed(2)} {finalBalance >= 0 ? "Cr" : "Dr"}
         </div>
       </div>
