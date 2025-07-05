@@ -6,8 +6,8 @@ const HomeFormSection = () => {
   const {login, cred} = useAuth()
 
   const [form, setForm] = useState({
-    firmcode: "",
-    password: "",
+    firmcode: "DEMO01",
+    password: "DEMO01",
   })
   
 
@@ -22,8 +22,8 @@ const HomeFormSection = () => {
     // console.log(res)
     await login(form)
     setForm({
-    firmcode: "",
-    password: "",
+    firmcode: "DEMO01",
+    password: "DEMO01",
   })
   }
 
@@ -45,11 +45,11 @@ const HomeFormSection = () => {
               <div className="w-9/12">
                 <div className="flex flex-col">
                   <label htmlFor="firmcode" className="text-gray-400 text-sm">User Code:</label>
-                  <input type="text" name="firmcode" className="bg-white h-10 rounded-lg text-black text-xl px-2" placeholder="DEMO01" value={form.firmcode} onChange={(e)=>handleChange(e)}/>
+                  <input type="text" name="firmcode" className="bg-white h-10 rounded-lg text-black text-xl px-2" value={form.firmcode} onChange={(e)=>handleChange(e)}/>
                 </div>
                 <div className="flex flex-col mt-3">
                   <label htmlFor="password" className="text-gray-400 text-sm">Password:</label>
-                  <input type="password" name="password" className="bg-white h-10 rounded-lg text-black text-xl px-2" placeholder="DEMO01" value={form.password} onChange={(e)=>handleChange(e)}/>
+                  <input type="password" name="password" className="bg-white h-10 rounded-lg text-black text-xl px-2" value={form.password} onChange={(e)=>handleChange(e)}/>
                 </div>
                 {cred && (<div className='text-red-500 mt-2 text-xl'>{cred}</div>)}
                 <div className="flex flex-col mt-10">
