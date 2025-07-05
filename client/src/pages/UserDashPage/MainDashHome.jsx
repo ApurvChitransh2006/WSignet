@@ -60,11 +60,11 @@ const MainDashHome = () => {
           } flex flex-col items-center`}
         >
           <div className="w-full grid grid-cols-12 gap-4 font-bold md:text-lg mb-3 px-2">
-            <div className="col-span-3">Product Name</div>
-            <div className="col-span-3">Manufacturer</div>
+            <div className="col-span-5">Product Name</div>
+            <div className="col-span-5">Manufacturer</div>
             <div className="col-span-2 text-end">N.Rate</div>
-            <div className="col-span-2 text-end">D.Rate</div>
-            <div className="col-span-2 text-end">S.Rate</div>
+            {/* <div className="col-span-2 text-end">D.Rate</div>
+            <div className="col-span-2 text-end">S.Rate</div> */}
           </div>
 
           <div className="overflow-y-auto hide-scrollbar w-full">
@@ -73,21 +73,21 @@ const MainDashHome = () => {
                 key={x.id}
                 className="w-full min-w-full grid grid-cols-12 gap-1 text-sm md:text-lg hover:bg-[#353535] my-1 px-1 rounded border-b-2 border-gray-500 h-10 items-center"
               >
-                <div className="col-span-3 truncate overflow-hidden whitespace-nowrap min-w-0">
+                <div className="col-span-5 truncate overflow-hidden whitespace-nowrap min-w-0">
                   {x.productName.replaceAll("-", " ")}
                 </div>
-                <div className="col-span-3 truncate overflow-hidden whitespace-nowrap min-w-0">
+                <div className="col-span-5 truncate overflow-hidden whitespace-nowrap min-w-0">
                   {x.mfgName.replaceAll("-", " ")}
                 </div>
                 <div className="col-span-2 text-end truncate overflow-hidden whitespace-nowrap min-w-0">
                   {x.salesRate}
                 </div>
-                <div className="col-span-2 text-end truncate overflow-hidden whitespace-nowrap min-w-0">
+                {/* <div className="col-span-2 text-end truncate overflow-hidden whitespace-nowrap min-w-0">
                   {x.dharaRate}
                 </div>
                 <div className="col-span-2 text-end truncate overflow-hidden whitespace-nowrap min-w-0">
                   {x.superRate}
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
