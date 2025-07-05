@@ -6,8 +6,8 @@ const HomeFormSection = () => {
   const {login, cred} = useAuth()
 
   const [form, setForm] = useState({
-    firmcode: "DEMO01",
-    password: "DEMO01",
+    firmcode: "DEMO",
+    password: "DEMO",
   })
   
 
@@ -22,8 +22,8 @@ const HomeFormSection = () => {
     // console.log(res)
     await login(form)
     setForm({
-    firmcode: "DEMO01",
-    password: "DEMO01",
+    firmcode: "DEMO",
+    password: "DEMO",
   })
   }
 
