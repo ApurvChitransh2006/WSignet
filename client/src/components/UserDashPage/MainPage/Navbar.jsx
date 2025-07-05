@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className={`${navOpen?'absolute':'hidden'} h-40 w-48 mt-2 border-2 border-white rounded-lg top-full right-0 flex flex-col justify-center p-2 bg-black `}>
         <Link to={'/dash/udash'}><div className='rounded-lg px-2 hover:bg-[#262626]'>Search Product</div></Link>
         <Link to={'/dash/udash/report'}><div className='rounded-lg px-2 hover:bg-[#262626]'>Account Ledger</div></Link>
-        <div className='rounded-lg px-2 hover:bg-[#262626]' onClick={()=>{setEditData(true); setnavOpen(false)}}>Change Password</div>
+        <div className='rounded-lg px-2 hover:bg-[#262626]' onClick={()=>{setEditData(true); setnavOpen(false)}}>Password</div>
         <Link to={'/dash/udash/uploaddb'}><div className='rounded-lg px-2 hover:bg-[#262626]'>Update Database</div></Link>
         <Link to={'/'} onClick={()=>logout()}><div className='rounded-lg px-2 hover:bg-[#262626]'>Logout</div></Link>
       </div>
