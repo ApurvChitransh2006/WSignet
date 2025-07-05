@@ -88,8 +88,8 @@ const ReportPDF = ({
       {/* Opening Balance */}
       <div className="grid grid-cols-18 text-sm py-2 bg-yellow-50 font-semibold border-b">
         <div className="col-span-1 border-r text-center">--</div>
-        <div className="col-span-3 border-r text-center">--</div>
-        <div className="col-span-5 border-r">Opening Balance</div>
+        <div className="col-span-1 border-r text-center">--</div>
+        <div className="col-span-7 border-r">Opening Balance</div>
         <div className="col-span-3 border-r text-right">
           {openingBalMode === "Debit" ? openingBalance.toFixed(2) : ""}
         </div>
