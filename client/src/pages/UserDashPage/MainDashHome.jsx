@@ -73,10 +73,10 @@ const MainDashHome = () => {
                 key={x.id}
                 className="w-full min-w-full grid grid-cols-12 gap-1 text-sm md:text-lg hover:bg-[#353535] my-1 px-1 rounded border-b-2 border-gray-500 h-10 items-center"
               >
-                <div className="col-span-5 truncate overflow-hidden whitespace-nowrap min-w-0">
+                <div className="col-span-5 overflow-x-auto hide-scrollbar min-w-0">
                   {x.productName.replaceAll("-", " ")}
                 </div>
-                <div className="col-span-5 truncate overflow-hidden whitespace-nowrap min-w-0">
+                <div className="col-span-5 overflow-x-auto hide-scrollbar min-w-0">
                   {x.mfgName.replaceAll("-", " ")}
                 </div>
                 <div className="col-span-2 text-end truncate overflow-hidden whitespace-nowrap min-w-0">
