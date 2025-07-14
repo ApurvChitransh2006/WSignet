@@ -35,4 +35,27 @@ router.get('/getlist/:code', async (req, res)=>{
 })
 
 
+router.get('/search', async (req, res) => {
+  try {
+    const { code, query } = req.query;
+    console.log(code, query)
+    if (!code || !query) {
+      return res.status(400).json({ error: "Missing code or query" });
+    }
+
+
+    const results = await product.find({
+      firmCode: code,
+      productName: { $regex: query, $options: 'i' } // case-insensitive
+    });
+
+    res.status(200).json(results);
+  } catch (err) {
+    console.error("Search error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+
 module.exports = router
