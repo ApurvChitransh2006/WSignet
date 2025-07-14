@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../../components/UserDashPage/MainPage/Navbar';
 import instance from '../../api/axiosInstance'; // Your custom Axios instance
 import useAuth from '../../hooks/useAuth';
+import { ImSpinner9 } from "react-icons/im";
 
 const UploadDb = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -24,6 +25,7 @@ const UploadDb = () => {
       setStatus('Please select a file first.');
       return;
     }
+    setStatus(<p className='flex gap-2 justify-center items-center'><ImSpinner9 className='text-green-400 animate-spin'/>Updating Database </p>)
 
     try {
       const formData = new FormData();
@@ -44,7 +46,7 @@ const UploadDb = () => {
         },
       });
       
-      setSelectedDB(null)
+      setSelectedDB("product")
       setStatus('Upload Successful: ' + response.data);
     } catch (error) {
       console.error(error);
@@ -96,7 +98,7 @@ const UploadDb = () => {
             className='bg-green-600 active:bg-green-400 rounded-xl py-2 w-2/3 md:w-1/3'
           />
 
-          {status && <p className="text-sm mt-2">{status}</p>}
+          {status && <div className="text-sm mt-2">{status}</div>}
         </div>
       </form>
 

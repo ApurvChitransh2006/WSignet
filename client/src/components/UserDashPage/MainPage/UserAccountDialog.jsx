@@ -108,6 +108,7 @@ const UserAccountDialog = ({ setEditData }) => {
             <button
               type="submit"
               className="bg-emerald-600 h-10 rounded-lg text-white text-xl"
+              disabled = {user.firmcode === "DEMO"}
             >
               Save Changes
             </button>

@@ -1,145 +1,146 @@
-import React, { useEffect, useState } from 'react'
-import html2pdf from 'html2pdf.js'
+import React, { useEffect, useState } from "react";
 
-const ReportPDF = () => {
+const ReportPDF = ({
+  ledgerData,
+  accountName,
+  startDate,
+  endDate,
+  openingBalance,
+  openingBalMode,
+  onClose,
+}) => {
+  const [sortedData, setSortedData] = useState([]);
+  const [balanceList, setBalanceList] = useState([]);
+  const [totalDr, setTotalDr] = useState(0);
+  const [totalCr, setTotalCr] = useState(0);
 
-  const datas = [
-  {
-    "vdate": "01-04-24",
-    "narration": "Opening Balance",
-    "drAmount": 90424.00,
-    "crAmount": null
-  },
-  {
-    "vdate": "07-04-24",
-    "narration": "Bill No.: SVC-000230",
-    "drAmount": 119248.00,
-    "crAmount": null
-  },
-  {
-    "vdate": "03-05-24",
-    "narration": "TRANS.PNB.",
-    "drAmount": null,
-    "crAmount": 30000.00
-  },
-  {
-    "vdate": "08-05-24",
-    "narration": "Bill No.: SVC-001230",
-    "drAmount": 7980.00,
-    "crAmount": null
-  },
-  {
-    "vdate": "19-05-24",
-    "narration": "TRANS.PNB.",
-    "drAmount": null,
-    "crAmount": 30000.00
-  },
-  {
-    "vdate": "24-05-24",
-    "narration": "Bill No.: SVC-001639",
-    "drAmount": 46239.00,
-    "crAmount": null
-  },
-  {
-    "vdate": "04-06-24",
-    "narration": "TRANS.PNB.",
-    "drAmount": null,
-    "crAmount": 30424.00
-  },
-  {
-    "vdate": "19-06-24",
-    "narration": "Bill No.: SVC-002141",
-    "drAmount": 38622.00,
-    "crAmount": null
-  },
-  {
-    "vdate": "26-06-24",
-    "narration": "TRANS.PNB.",
-    "drAmount": null,
-    "crAmount": 30000.00
-  },
-  {
-    "vdate": "10-07-24",
-    "narration": "TRANSPNB",
-    "drAmount": null,
-    "crAmount": 30000.00
-  },
-  {
-    "vdate": "24-07-24",
-    "narration": "TRANS.PNB.",
-    "drAmount": null,
-    "crAmount": 29248.00
-  },
-  {
-    "vdate": "04-08-24",
-    "narration": "Bill No.: SVC-003433",
-    "drAmount": 111517.00,
-    "crAmount": null
-  },
-  {
-    "vdate": "13-08-24",
-    "narration": "TRANS.PNB.",
-    "drAmount": null,
-    "crAmount": 7980.00
-  },
-  {
-    "vdate": "14-08-24",
-    "narration": "Bill No.: SVC-003712",
-    "drAmount": 33642.00,
-    "crAmount": null
-  }
-]
-
-  const handlePdf = ()=>{
-
-  }
-
-  const [balance, setBalance] = useState([]);
+  // Format date as dd-mm-yyyy
+  const formatDate = (input) => {
+    const date = new Date(input);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
   useEffect(() => {
-    let runningBalance = 0;
-    const updatedBalance = [];
+    const sorted = [...ledgerData].sort((a, b) => new Date(a.vdate) - new Date(b.vdate));
+    setSortedData(sorted);
 
-    for (let i = 0; i < datas.length; i++) {
-      if (datas[i].drAmount) {
-        runningBalance -= datas[i].drAmount;
+    let runningBalance =
+      openingBalMode === "Debit" ? -openingBalance :
+      openingBalMode === "Credit" ? openingBalance : 0;
+
+    let drSum = 0;
+    let crSum = 0;
+    const tempBalances = [runningBalance];
+
+    sorted.forEach((entry) => {
+      if (entry.drAmount) {
+        runningBalance -= entry.drAmount;
+        drSum += entry.drAmount;
       }
-      if (datas[i].crAmount) {
-        runningBalance += datas[i].crAmount;
+      if (entry.crAmount) {
+        runningBalance += entry.crAmount;
+        crSum += entry.crAmount;
       }
-      updatedBalance.push(runningBalance);
-    }
+      tempBalances.push(runningBalance);
+    });
 
-    setBalance(updatedBalance);
-  }, []);
+    setTotalDr(drSum);
+    setTotalCr(crSum);
+    setBalanceList(tempBalances);
+  }, [ledgerData, openingBalance, openingBalMode]);
 
-  
+  const finalBalance = balanceList[balanceList.length - 1] || 0;
 
   return (
-    <div className='text-black bg-white fixed inset-0 text-center '>
-      <div className='text-2xl'>ReportPDF</div>
-      <div className='text-sm'>Mobile No. : 9918102015</div>
-      <div className='text-sm'>Account No.: <span className='font-bold'>Ganesh Trading Company</span></div>
-      <div className='text-sm'>Periods : 01-04-2024 To 31-03-2025</div>
-      <div className='grid grid-cols-12 border-b-2 border-t-2 mt-3 px-2'>
-        <div className='col-span-1 border-r-2 border-gray-400'>V.Date</div>
-        <div className='col-span-5 border-r-2 border-gray-400'>Naration</div>
-        <div className='col-span-2 border-r-2 border-gray-400'>Dr Amount</div>
-        <div className='col-span-2 border-r-2 border-gray-400'>Cr Amount</div>
-        <div className='col-span-2 '>Running Balance</div>
+    <div className="fixed inset-0 bg-white text-black overflow-y-auto px-6 py-6 z-50">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Ledger Report</h2>
+        <button
+          onClick={onClose}
+          className="bg-red-500 text-white px-4 py-2 rounded"
+        >
+          Close
+        </button>
       </div>
-        {datas.map((x, index)=>(
-          <div key={x.vdate} className='grid grid-cols-12 px-2'>
-            <div className='col-span-1 border-r-2 border-gray-400'>{x.vdate}</div>
-            <div className='col-span-5 border-r-2 border-gray-400 text-start'>{x.narration}</div>
-            <div className='col-span-2 border-r-2 border-gray-400 text-end'>{x.drAmount? x.drAmount:''}</div>
-            <div className='col-span-2 border-r-2 border-gray-400 text-end'>{x.crAmount? x.crAmount:''}</div>
-            <div className='col-span-2 text-end'>{balance[index]>0? `${Math.abs(balance[index])} Cr`:`${Math.abs(balance[index])} Dr`}</div>
-          </div>
-        ))}
-        
-    </div>
-  )
-}
 
-export default ReportPDF
+      {/* Account Info */}
+      <div className="mb-1 text-sm">
+        <strong>Account:</strong> {accountName}
+      </div>
+      <div className="mb-4 text-sm">
+        <strong>Period:</strong> {formatDate(startDate)} to {formatDate(endDate)}
+      </div>
+
+      {/* Table Header */}
+      <div className="grid grid-cols-18 font-semibold text-sm bg-gray-100 py-2 border-y-2">
+        <div className="col-span-1 border-r text-center">V</div>
+        <div className="col-span-3 border-r text-center">V.Date</div>
+        <div className="col-span-5 border-r">Narration</div>
+        <div className="col-span-3 border-r text-right">Dr Amount</div>
+        <div className="col-span-3 border-r text-right">Cr Amount</div>
+        <div className="col-span-3 text-right">Balance</div>
+      </div>
+
+      {/* Opening Balance */}
+      <div className="grid grid-cols-18 text-sm py-2 bg-yellow-50 font-semibold border-b">
+        <div className="col-span-1 border-r text-center">--</div>
+        <div className="col-span-3 border-r text-center">--</div>
+        <div className="col-span-5 border-r">Opening Balance</div>
+        <div className="col-span-3 border-r text-right">
+          {openingBalMode === "Debit" ? openingBalance.toFixed(2) : ""}
+        </div>
+        <div className="col-span-3 border-r text-right">
+          {openingBalMode === "Credit" ? openingBalance.toFixed(2) : ""}
+        </div>
+        <div className="col-span-3 text-right">
+          {Math.abs(balanceList[0]).toFixed(2)} {balanceList[0] >= 0 ? "Cr" : "Dr"}
+        </div>
+      </div>
+
+      {/* Ledger Entries */}
+      {sortedData.map((entry, index) => (
+        <div key={index} className="grid grid-cols-18 text-sm py-2 border-b">
+          <div className="col-span-1 border-r text-center">{entry.vtype}</div>
+          <div className="col-span-3 border-r text-center">{formatDate(entry.vdate)}</div>
+          <div className="col-span-5 border-r">{entry.vdis || "N/A"}</div>
+          <div className="col-span-3 border-r text-right break-words min-w-0 whitespace-pre-wrap">
+            {entry.drAmount ? entry.drAmount.toFixed(2) : ""}
+          </div>
+          <div className="col-span-3 border-r text-right break-words min-w-0 whitespace-pre-wrap">
+            {entry.crAmount ? entry.crAmount.toFixed(2) : ""}
+          </div>
+          <div className="col-span-3 text-right break-words min-w-0 whitespace-pre-wrap">
+            {Math.abs(balanceList[index + 1]).toFixed(2)}{" "}
+            {balanceList[index + 1] >= 0 ? "Cr" : "Dr"}
+          </div>
+        </div>
+      ))}
+
+      {/* Totals */}
+      <div className="grid grid-cols-18 text-sm py-3 font-semibold border-t-2 mt-2">
+        <div className="col-span-9 text-right pr-4">Total:</div>
+        <div className="col-span-3 text-right border-r">
+          {totalDr.toFixed(2)}
+        </div>
+        <div className="col-span-3 text-right border-r">
+          {totalCr.toFixed(2)}
+        </div>
+        <div className="col-span-3 text-right font-bold">
+          {Math.abs(finalBalance).toFixed(2)} {finalBalance >= 0 ? "Cr" : "Dr"}
+        </div>
+      </div>
+
+      {/* Closing Balance */}
+      <div className="text-right font-bold text-lg mt-3">
+        Closing Balance: {Math.abs(finalBalance).toFixed(2)}{" "}
+        {finalBalance >= 0 ? "Cr" : "Dr"}
+      </div>
+    </div>
+  );
+};
+
+export default ReportPDF;

@@ -18,7 +18,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(cors({
-  origin: "http://localhost:5173", 
+  origin: process.env.REACT_APP_URL, 
   credentials: true
 }));
 
@@ -32,4 +32,7 @@ app.get("/", (req, res) => {
   res.json({ Message: "This is a Test API" });
 });
 
-module.exports = app;
+const PORT = process.env.PORT || 5000; // use Render's dynamic port
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
